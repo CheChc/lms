@@ -1,8 +1,6 @@
 ## 简介
 
-一个用Django+MySQL搭建的图书馆管理系统，主要用于练习后端操作数据库与前端交互，用的是MySQL的原生语句。
-
-![](https://shijin-img.oss-cn-chengdu.aliyuncs.com/blog-img/图书馆系统展示.gif)
+一个用Django+MySQL搭建的图书馆管理系统.
 
 ## 项目环境
 
@@ -11,29 +9,66 @@
 + MySQL 5.7
 + Pycharm 2019.2.4
 
-## 修改
+## 为链接数据库进行修改
+
+- 1、新建一个mysql数据库，假设名为test01
+- 2、在settings里进行修改：
 
 ```python
-# lms/settings.py
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'PORT': 3306,
         'HOST': 'localhost',
-        'NAME': 'lms',  # 改为自己数据库名字
+        'NAME': 'test01',  # 改为自己数据库名字
         'USER': 'root',
-        'PASSWORD': '123456' # 改为数据库密码
+        'PASSWORD': '497*****' # 改为数据库密码
     }
 }
 
 ```
 
+- 3、修改_init.py文件
 
+添加语句：
 
-## 运行方式
+```sql 
+import pymysql
 
-确认你的电脑已经正确安装 Python 3.4 以上的版本。
+pymysql.install_as_MySQLdb()//更换了数据库引擎
+```
+
+## 迁移数据库
+
+- 创建APP
+
+`python manage.py startapp web`
+
+- 在setings中添加APP
+
+``` sql
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'book',
+    'web.apps.WebConfig',
+]
+```
+
+- 迁移数据库
+
+``` sql
+python manage.py makemigrations
+python manage.py migrate//同步了数据库
+```
+
+## 运行项目
+
+确认已经正确安装 Python 3.4 以上的版本,但是版本不能过高，建议3.8
 
 下载项目后，在命令行中进入项目目录，并创建**虚拟环境**：
 
@@ -41,13 +76,7 @@ DATABASES = {
 python -m venv env
 ```
 
-运行**虚拟环境**（Windows环境）:
-
-```bash
-env\Scripts\activate.bat
-```
-
-或（Linux环境）：
+运行虚拟环境(MacOS)
 
 ```bash
 source env/bin/activate
@@ -66,6 +95,4 @@ python manage.py runserver
 ```
 
 项目就运行起来了。
-
-![](https://shijin-img.oss-cn-chengdu.aliyuncs.com/blog-img/20200907210148.png)
 
